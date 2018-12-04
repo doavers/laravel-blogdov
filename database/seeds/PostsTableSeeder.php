@@ -39,7 +39,9 @@ class PostsTableSeeder extends Seeder
         		'image'			=> rand(0, 1) == 1 ? $image : NULL,
         		'created_at' 	=> $createdDate,
         		'updated_at' 	=> $createdDate,
-        		'published_at' 	=> $publishDate
+                'published_at' 	=> $publishDate,
+                'category_id'   => rand(1, 5),
+                'view_count'    => rand(1, 10) * 10
         	];
         }
 
