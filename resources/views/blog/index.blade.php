@@ -1,108 +1,68 @@
 @extends('layouts.main')
 
 @section('content')
-<div class="container">
-    <div class="row">
-        <div class="col-md-8">
-            <article class="post-item">
-                <div class="post-item-image">
-                    <a href="post.html">
-                        <img src="{{ asset('img/Post_Image_1.jpg') }}" alt="">
-                    </a>
-                </div>
-                <div class="post-item-body">
-                    <div class="padding-10">
-                        <h2><a href="post.html">Lorem ipsum dolor sit amet, consectetur adipisicing elit</a></h2>
-                        <p>Lorem ipsum dolor sit amet, consectetur adipisicing elit. Quos voluptas, blanditiis
-                            impedit repellat harum, eaque saepe aspernatur quo magnam obcaecati dolor! Deleniti
-                            quod repellendus non iste architecto, voluptate excepturi velit.</p>
-                    </div>
 
-                    <div class="post-meta padding-10 clearfix">
-                        <div class="pull-left">
-                            <ul class="post-meta-group">
-                                <li><i class="fa fa-user"></i><a href="#"> Admin</a></li>
-                                <li><i class="fa fa-clock-o"></i><time> February 12, 2016</time></li>
-                                <li><i class="fa fa-tags"></i><a href="#"> Blog</a></li>
-                                <li><i class="fa fa-comments"></i><a href="#">4 Comments</a></li>
-                            </ul>
-                        </div>
-                        <div class="pull-right">
-                            <a href="post.html">Continue Reading &raquo;</a>
-                        </div>
-                    </div>
-                </div>
-            </article>
-            <article class="post-item">
-                <div class="post-item-image">
-                    <a href="post.html">
-                        <img src="{{ asset('img/Post_Image_2.jpg') }}" alt="">
-                    </a>
-                </div>
-                <div class="post-item-body">
-                    <div class="padding-10">
-                        <h2><a href="post.html">Lorem ipsum dolor sit amet, consectetur adipisicing elit</a></h2>
-                        <p>Lorem ipsum dolor sit amet, consectetur adipisicing elit. Quos voluptas, blanditiis
-                            impedit repellat harum, eaque saepe aspernatur quo magnam obcaecati dolor! Deleniti
-                            quod repellendus non iste architecto, voluptate excepturi velit.</p>
-                    </div>
+	<div class="container">
+		<div class="row">
+			<div class="col-md-8">
+				@if(!$posts->count())
+					<div class="alert alert-warning">
+						<p>Nothing found</p>
+					</div>
+				@else
+					@if(isset($categoryName))
+						<div class="alert alert-info">
+							<p>Category: <strong>{{ $categoryName }}</strong></p>
+						</div>
+					@endif
 
-                    <div class="post-meta padding-10 clearfix">
-                        <div class="pull-left">
-                            <ul class="post-meta-group">
-                                <li><i class="fa fa-user"></i><a href="#"> Admin</a></li>
-                                <li><i class="fa fa-clock-o"></i><time> February 12, 2016</time></li>
-                                <li><i class="fa fa-tags"></i><a href="#"> Blog</a></li>
-                                <li><i class="fa fa-comments"></i><a href="#">4 Comments</a></li>
-                            </ul>
-                        </div>
-                        <div class="pull-right">
-                            <a href="post.html">Continue Reading &raquo;</a>
-                        </div>
-                    </div>
-                </div>
-            </article>
-            <article class="post-item">
-                <div class="post-item-image">
-                    <a href="post.html">
-                        <img src="{{ asset('img/Post_Image_3.jpg') }}" alt="">
-                    </a>
-                </div>
-                <div class="post-item-body">
-                    <div class="padding-10">
-                        <h2><a href="post.html">Lorem ipsum dolor sit amet, consectetur adipisicing elit,
-                                consectetur adipisicing elit</a></h2>
-                        <p>Lorem ipsum dolor sit amet, consectetur adipisicing elit. Quos voluptas, blanditiis
-                            impedit repellat harum, eaque saepe aspernatur quo magnam obcaecati dolor! Deleniti
-                            quod repellendus non iste architecto, voluptate excepturi velit.</p>
-                    </div>
+					@if(isset($authorName))
+						<div class="alert alert-info">
+							<p>Author: <strong>{{ $authorName }}</strong></p>
+						</div>
+					@endif
 
-                    <div class="post-meta padding-10 clearfix">
-                        <div class="pull-left">
-                            <ul class="post-meta-group">
-                                <li><i class="fa fa-user"></i><a href="#"> Admin</a></li>
-                                <li><i class="fa fa-clock-o"></i><time> February 12, 2016</time></li>
-                                <li><i class="fa fa-tags"></i><a href="#"> Vue Js</a>, <a href="#"> Laravel</a></li>
-                                <li><i class="fa fa-comments"></i><a href="#">4 Comments</a></li>
-                            </ul>
-                        </div>
-                        <div class="pull-right">
-                            <a href="post.html">Continue Reading &raquo;</a>
-                        </div>
-                    </div>
-                </div>
-            </article>
+					@foreach($posts as $post)
+						<article class="post-item">
+							@if ($post->image_url)
+							<div class="post-item-image">
+								<a href="{{ route('blog.show', $post->slug) }}">
+									<img src="{{ $post->image_url }}" alt="{{ $post->title }}">
+								</a>
+							</div>
+							@endif
+							<div class="post-item-body">
+								<div class="padding-10">
+									<h2><a href="{{ route('blog.show', $post->slug) }}">{{ $post->title }}</a></h2>
+									{!! $post->excerpt_html !!}
+								</div>
 
-            <nav>
-                <ul class="pager">
-                    <li class="previous disabled"><a href="#"><span aria-hidden="true">&larr;</span> Newer</a></li>
-                    <li class="next"><a href="#">Older <span aria-hidden="true">&rarr;</span></a></li>
-                </ul>
-            </nav>
-        </div>
+								<div class="post-meta padding-10 clearfix">
+									<div class="pull-left">
+										<ul class="post-meta-group">
+										<li><i class="fa fa-user"></i><a href="{{ route('author', $post->author->slug) }}"> {{ $post->author->name }}</a></li>
+											<li><i class="fa fa-clock-o"></i><time> {{ $post->date }}</time></li>
+											<li><i class="fa fa-folder"></i><a href="{{ route('category', $post->category->slug) }}"> {{ $post->category->title }}</a></li>
+											<li><i class="fa fa-comments"></i><a href="#">4 Comments</a></li>
+										</ul>
+									</div>
+									<div class="pull-right">
+										<a href="{{ route('blog.show', $post->slug) }}">Continue Reading &raquo;</a>
+									</div>
+								</div>
+							</div>
+						</article>
+					@endforeach
+					<nav>
+						{{ $posts->links() }}
+					</nav>
+				@endif
+			</div>
+			
+			@include('layouts.sidebar')
+			
+		</div>
+	</div>
 
-        @include('layouts.sidebar')
-
-    </div>
-</div>
 @endsection
+	

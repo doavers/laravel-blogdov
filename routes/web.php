@@ -11,10 +11,31 @@
 |
 */
 
-Route::get('/', function () {
-	// return view('welcome');
-	return view('blog.index');
-});
-Route::get('/blog/show', function () {
+/*Route::get('/', function () {
+    // return view('welcome');
+    return view('blog.index');
+});*/
+
+Route::get('/', [
+	'uses' => 'BlogController@index',
+	'as' => 'blog'
+]);
+
+/*Route::get('/blog/show', function () {
 	return view('blog.show');
-});
+});*/
+
+Route::get('/blog/{post}', [
+	'uses' => 'BlogController@show',
+	'as' => 'blog.show'
+]);
+
+Route::get('/category/{category}', [
+	'uses' => 'BlogController@category',
+	'as' => 'category'
+]);
+
+Route::get('/author/{author}', [
+	'uses' => 'BlogController@author',
+	'as' => 'author'
+]);
