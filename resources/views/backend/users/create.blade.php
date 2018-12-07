@@ -1,6 +1,6 @@
 @extends('layouts.backend.main')
 
-@section('title', 'MyBlog | Add New Post')
+@section('title', 'MyBlog | Create new user')
 
 @section('content')
 
@@ -8,8 +8,8 @@
 	<!-- Content Header (Page header) -->
 	<section class="content-header">
 		<h1>
-			Blog
-			<small>Add new post</small>
+			Users
+			<small>Add new user</small>
 		</h1>
 		<ol class="breadcrumb">
 			<li>
@@ -17,7 +17,7 @@
 					<i class="fa fa-dashboard"></i> Dashboard
 				</a>
 			</li>
-			<li><a href="{{ route('backend.blog.index') }}">Blog</a></li>
+			<li><a href="{{ route('backend.users.index') }}">Users</a></li>
 			<li class="active">Add new</li>
 		</ol>
 	</section>
@@ -25,14 +25,14 @@
 	<!-- Main content -->
 	<section class="content">
 		<div class="row">
-			{!! Form::model($post, [
+			{!! Form::model($user, [
 				'method' => 'POST',
-				'route'  => 'backend.blog.store',
+				'route'  => 'backend.users.store',
 				'files'  => TRUE,
-				'id'     => 'post-form'
+				'id'     => 'user-form'
 			]) !!}
 			
-			@include('backend.blog.form')
+			@include('backend.users.form')
 
 			{!! Form::close() !!}
 
@@ -43,5 +43,3 @@
 </div>
 
 @endsection
-
-@include('backend.blog.script')
