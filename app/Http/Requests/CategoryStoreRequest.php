@@ -24,8 +24,8 @@ class CategoryStoreRequest extends FormRequest
     public function rules()
     {
         return [
-            'title' => 'required|max:255|uniquie:categories,title,'.$this->route('categories'),
-            'slug'  => 'required|max:255|uniquie:categories,slug,'.$this->route('categories'),
+            'title' => 'required|unique:categories|max:255',
+            'slug'  => 'required|unique:categories|max:255',
         ];
     }
 }

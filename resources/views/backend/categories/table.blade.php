@@ -14,9 +14,15 @@
                 <a href="{{ route('backend.categories.edit', $category->id) }}" class="btn btn-xs btn-default">
                     <i class="fa fa-edit"></i>
                 </a>
-                <button onclick="return confirm('Are you sure?');" type="submit" class="btn btn-xs btn-danger">
-                    <i class="fa fa-times"></i>
-                </button>
+                @if($category->id == config('cms.default_category_id'))
+                    <button onclick="return false" type="submit" class="btn btn-xs btn-danger disabled">
+                        <i class="fa fa-times"></i>
+                    </button>
+                @else
+                    <button onclick="return confirm('Are you sure?');" type="submit" class="btn btn-xs btn-danger">
+                        <i class="fa fa-times"></i>
+                    </button>
+                @endif
                 {!! Form::close() !!}
             </td>
             <td>{{ $category->title }}</td>

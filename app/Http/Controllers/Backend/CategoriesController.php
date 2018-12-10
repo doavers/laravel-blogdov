@@ -66,7 +66,7 @@ class CategoriesController extends BackendController
     {
         $category = Category::findOrFail($id);
 
-        return view("backend.categories.create", compact('category'));
+        return view("backend.categories.edit", compact('category'));
     }
 
     /**
