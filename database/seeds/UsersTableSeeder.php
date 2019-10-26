@@ -12,35 +12,35 @@ class UsersTableSeeder extends Seeder
      */
     public function run()
     {
-        // reset the users table
-        DB::statement('SET FOREIGN_KEY_CHECKS=0');
-        DB::table('users')->truncate();
+		// reset the users table
+		DB::statement('SET FOREIGN_KEY_CHECKS=0');
+		DB::table('users')->truncate();
 
-        // generate 3 users/author
+		// generate 3 users/author
 		$faker = Factory::create();
 		
-        DB::table('users')->insert([
+		DB::table('users')->insert([
 			[
 				'name'		=> 'Dovy Doe',
 				'slug'		=> 'dovy-doe',
-        		'email'		=> 'dovydoe@test.com',
+				'email'		=> 'dovydoe@test.com',
 				'password'	=> bcrypt('secret'),
 				'bio' 		=> $faker->text(rand(250, 300))
-        	],
+			],
 			[
-        		'name'		=> 'John Doe',
-        		'slug'		=> 'john-doe',
-        		'email'		=> 'johndoe@test.com',
+				'name'		=> 'John Doe',
+				'slug'		=> 'john-doe',
+				'email'		=> 'johndoe@test.com',
 				'password'	=> bcrypt('secret'),
 				'bio' 		=> $faker->text(rand(250, 300))
-        	],
-        	[
+			],
+			[
 				'name'		=> 'Jane Doe',
 				'slug'		=> 'jane-doe',
-        		'email'		=> 'janedoe@test.com',
+				'email'		=> 'janedoe@test.com',
 				'password'	=> bcrypt('secret'),
 				'bio' 		=> $faker->text(rand(250, 300))
-        	],
-        ]);
+			],
+		]);
     }
 }

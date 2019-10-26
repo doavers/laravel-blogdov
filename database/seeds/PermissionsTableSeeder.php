@@ -13,6 +13,8 @@ class PermissionsTableSeeder extends Seeder
      */
     public function run()
     {
+        DB::table('permissions')->truncate();
+
         // CRUD posts
         $crudPost = new Permission();
         $crudPost->name = "crud-post";
@@ -38,9 +40,18 @@ class PermissionsTableSeeder extends Seeder
         $crudUser->name = "crud-user";
         $crudUser->save();
 
-        // Attach roles
+        // Attach roles permissions
         $admin = Role::whereName('admin')->first();
         $editor = Role::whereName('editor')->first();
         $author = Role::whereName('author')->first();
+
+        $admin->detachPermissions([$crudPost, $updateOthersPost, $deleteOthersPost, $crudCategory, $crudUser]);
+        $admin->attachPermissions([$crudPost, $updateOthersPost, $deleteOthersPost, $crudCategory, $crudUser]);
+        
+        $editor->detachPermissions([$crudPost, $updateOthersPost, $deleteOthersPost, $crudCategory]);
+        $editor->attachPermissions([$crudPost, $updateOthersPost, $deleteOthersPost, $crudCategory]);
+        
+        $author->detachPermission($crudPost);
+        $author->attachPermission($crudPost);
     }
 }
