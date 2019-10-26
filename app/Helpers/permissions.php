@@ -46,7 +46,7 @@ function check_user_permissions($request, $actionName = NULL, $id = NULL)
 				// If the current user has not update-others-post/delete-others-post permission
 				// make sure he/she only modify his/her own post
 				if ($id && (!$currentUser->can('update-others-post') || !$currentUser->can('delete-others-post'))) {
-					$post = \App\Post::find($id);
+					$post = \App\Post::withTrashed()->find($id);
 					if($post->author_id !== $currentUser->id) {
 						// dd("Cannot update/delete others post");
 						return false;
