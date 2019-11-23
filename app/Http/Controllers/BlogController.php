@@ -14,18 +14,29 @@ class BlogController extends Controller
 
 	public function index()
 	{
-		/*\DB::enableQueryLog();
-		$posts = Post::all();
+		// \DB::enableQueryLog();
+
+		/*$posts = Post::all();
 		$posts = Post::with('author')->get();
-		$posts = Post::with('author')->orderBy('created_at', 'desc')->get();
-		view("blog.index", compact('posts'))->render();
-		dd(\DB::getQueryLog());*/
+		$posts = Post::with('author')->orderBy('created_at', 'desc')->get();*/
+		// Check if any term entered
+		/* if($term = request('term')) {
+			$posts->where(function($q) use ($term) {
+				$q->orWhere('title', 'LIKE', "%{$term}%");
+				$q->orWhere('excerpt', 'LIKE', "%{$term}%");
+			});
+		} */
 
 		$posts = Post::with('author')
 					->latestFirst()
 					->published()
+					->filter(request('term'))
 					->simplePaginate($this->limit);
+		
 		return view("blog.index", compact('posts'));
+		/* view("blog.index", compact('posts'))->render();
+		dd(\DB::getQueryLog()); */
+
 	}
 	
 	public function category(Category $category)
