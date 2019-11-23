@@ -8,34 +8,47 @@ use App\Tag;
 
 class NavigationComposer
 {
-    public function compose(View $view)
-    {
-        $this->composeCategories($view);
+	public function compose(View $view)
+	{
+		$this->composeCategories($view);
 
-        $this->composeTags($view);
+		$this->composeTags($view);
 
-        $this->composePopularPosts($view);
-    }
+		$this->composePopularPosts($view);
 
-    private function composeCategories(View $view)
-    {
-        $categories = Category::with(['posts' => function($query) {
-            $query->published();
-        }])->orderBy('title', 'asc')->get();
+		$this->composeArchives($view);
+	}
 
-        $view->with('categories', $categories);
-    }
+	private function composeCategories(View $view)
+	{
+		$categories = Category::with(['posts' => function($query) {
+			$query->published();
+		}])->orderBy('title', 'asc')->get();
 
-    private function composeTags(View $view)
-    {
-        $tags = Tag::has('posts')->get();
+		$view->with('categories', $categories);
+	}
 
-        $view->with('tags', $tags);
-    }
+	private function composeTags(View $view)
+	{
+		$tags = Tag::has('posts')->get();
 
-    private function composePopularPosts(View $view)
-    {
-        $popularPosts = Post::published()->popular()->take(3)->get();
-        $view->with('popularPosts', $popularPosts);
-    }
+		$view->with('tags', $tags);
+	}
+
+	private function composeArchives(View $view)
+	{
+		$archives = Post::selectRaw('count(id) as post_count, year(published_at) as year, monthname(published_at) as month')
+			->published()
+			->groupBy('year', 'month')
+			->orderByRaw('MIN(published_at) DESC')
+			->get();
+
+		$view->with('archives', $archives);
+	}
+
+	private function composePopularPosts(View $view)
+	{
+		$popularPosts = Post::published()->popular()->take(3)->get();
+		$view->with('popularPosts', $popularPosts);
+	}
 }
