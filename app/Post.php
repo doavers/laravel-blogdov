@@ -24,6 +24,11 @@ class Post extends Model
 		return $this->belongsTo(Category::class);
 	}
 
+	public function tags()
+	{
+		return $this->belongsToMany(Tag::class);
+	}
+
 	public function dateFormatted($showTimes = false)
 	{
 		$format = "d/m/Y";
@@ -94,6 +99,17 @@ class Post extends Model
 	public function getExcerptHtmlAttribute($value)
 	{
 		return $this->excerpt ? Markdown::convertToHtml(e($this->excerpt)) : NULL;
+	}
+
+	// accessor tags_html
+	public function getTagsHtmlAttribute($value)
+	{
+		$anchor = [];
+		foreach($this->tags as $tag) {
+			$anchor[] = '<a href="'.route('tag', $tag->slug).'">'.$tag->name.'</a>';
+		}
+
+		return implode(", ", $anchor);
 	}
 
 	// accessor date
