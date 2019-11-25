@@ -29,11 +29,28 @@ class Post extends Model
 		return $this->belongsToMany(Tag::class);
 	}
 
+	public function comments()
+	{
+		return $this->hasMany(Comment::class);
+	}
+
 	public function dateFormatted($showTimes = false)
 	{
 		$format = "d/m/Y";
 		if($showTimes) $format = $format . " H:i:s";
 		return $this->created_at->format($format);
+	}
+
+	public function commentsNumber($label = 'Comment')
+	{
+		$commentsNumber = $this->comments->count();
+
+		return $commentsNumber." ".str_plural($label, $commentsNumber);
+	}
+
+	public function createComment(array $data)
+	{
+		$this->comments()->create($data);
 	}
 
 	public function publicationLabel()
