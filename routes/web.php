@@ -74,6 +74,10 @@ Route::resource('/backend/categories', 'Backend\CategoriesController', [
 	'as' => 'backend'
 ]);
 
+Route::resource('/backend/tags', 'Backend\TagsController', [
+	'as' => 'backend'
+]);
+
 Route::get('/backend/users/confirm/{user}', [
     'uses' => 'Backend\UsersController@confirm',
     'as' => 'backend.users.confirm'

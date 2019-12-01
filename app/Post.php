@@ -53,6 +53,29 @@ class Post extends Model
 		$this->comments()->create($data);
 	}
 
+	public function createTags($tagString)
+	{
+		$tags = explode(",", $tagString);
+		$tagIds = [];
+
+		foreach ($tags as $tag) 
+		{
+			// $newTag = new Tag();
+			// $newTag->name = ucwords(trim($tag));
+			// $newTag->slug = str_slug($tag);
+			$newTag = Tag::firstOrCreate(            
+				['slug' => str_slug($tag), 'name' => ucwords(trim($tag))]
+			);
+			$newTag->save();  
+
+			$tagIds[] = $newTag->id;
+		}
+
+		// $this->tags()->detach();
+		// $this->tags()->attach($tagIds);
+		$this->tags()->sync($tagIds);
+	}
+
 	public function publicationLabel()
 	{
 		if(!$this->published_at) 
@@ -134,6 +157,12 @@ class Post extends Model
 	{
 		return is_null($this->published_at) ? '' : $this->published_at->diffForHumans();
 	}
+
+	public function getTagsListAttribute()
+	{
+		return $this->tags->pluck('name');
+	}
+
 
 	// scope latest post first
 	public function scopeLatestFirst($query)
